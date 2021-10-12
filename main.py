@@ -24,13 +24,14 @@ parser.add_argument('--train_size', dest='train_size', type=int, default=1e8, he
 parser.add_argument('--save_freq', dest='save_freq', type=int, default=10, help='save a model every save_freq epoch')
 parser.add_argument('--test_freq', dest='test_freq', type=int, default=1, help='test a model every eval_freq epoch')
 # choose model
-parser.add_argument('--model', dest='model', default='base', help='three different models, base, partial, full')
+parser.add_argument('--model', dest='model', default='partial', help='three different models, base, partial, full')
 parser.add_argument('--type', dest='type', default='cyclegan', help='cyclegan or classifier')
 # model hyperparameters
 parser.add_argument('--lr', dest='lr', type=float, default=0.0002, help='initial learning rate for adam')
 parser.add_argument('--L1_lambda', dest='L1_lambda', type=float, default=10.0, help='weight on L1 term in objective')
 parser.add_argument('--sigma_c', dest='sigma_c', type=float, default=1.0, help='sigma of gaussian noise of classifiers')
 parser.add_argument('--sigma_d', dest='sigma_d', type=float, default=1.0, help='sigma of gaussian noise of discriminators')
+parser.add_argument('--gamma', dest='gamma', type=float, default=1.0, help='weight of extra discriminators')
 
 
 if __name__ == '__main__':
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     if args.debug:
         args.directory = os.path.join(args.directory, directory_name)
     else:
-        args.directory = os.path.join(args.directory, directory_name + '_' + now())
+        args.directory = os.path.join(args.directory, directory_name + '_' + now(), "stats")
 
     # init trainer
     trainer = CycleGANTrainer(args)
@@ -56,6 +57,7 @@ if __name__ == '__main__':
     # train loop
     try: # handle keyboard interrupt
         for epoch in range(args.epoch):
+            trainer.test()
             print(f"Epoch {epoch}:")
             trainer.train()
             if epoch % args.save_freq == 0:
