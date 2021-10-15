@@ -57,7 +57,6 @@ if __name__ == '__main__':
     # train loop
     try: # handle keyboard interrupt
         for epoch in range(args.epoch):
-            trainer.test()
             print(f"Epoch {epoch}:")
             trainer.train()
             if epoch % args.save_freq == 0:

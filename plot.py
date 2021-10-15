@@ -9,7 +9,7 @@ colors = ['C0']
 def plot_figure(dirname, fname, possible_algorithms=possible_algorithms):
     for algo, c in zip(possible_algorithms, colors):
         try:
-            data = np.loadtxt(os.path.join(dirname, fname), delimiter=',')
+            data = np.loadtxt(os.path.join(dirname, "stats", fname), delimiter=',')
             x, y = data[:, 0], data[:, 1]
             plt.title(fname)
             plt.plot(x, y, label=algo, color=c)
@@ -22,7 +22,7 @@ def plot_figure(dirname, fname, possible_algorithms=possible_algorithms):
 
 if __name__ == '__main__':
     dirpaths = [
-        "exp_music/JC_J_JC_C_2021_10_03_00_54_08"
+        "exp_music/JC_J_JC_C_2021_10_13_00_18_49"
     ]
 
     for dpth in dirpaths:
